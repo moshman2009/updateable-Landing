@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise, Async and Callback on Javascript</title>
+    <link rel="shortcut icon" href="/all/js-image.webp" type="image/x-icon">
+</head>
+<body>
+<h1>JavaScript Functions</h1>
+<h2>Function Sequence</h2>
+<p>JavaScript functions are executed in the sequence they are called.</p>
+
+<p id="dem"></p>
+<p id="demo"></p>
+
+<script>
+function myDisplayer(result) {
+  document.getElementById("dem").innerHTML = "The result of the calculation is: "+ result;
+}
+function calc(num1,num2){
+  return num1 + num2
+}
+const result = calc(3,4)
+myDisplayer(result)
+</script>
+
+<script>
+// Create an Array
+const myNumbers = [4, 1, -20, -7, 5, 9, -6];
+
+//make a function to select 
+  function addNumtoArrayIfFit(numbers, callback) {
+
+  const myArray = [];  // making/specifying myArray to be an array .A loop below;
+
+  for ( x of numbers) {  //loop that i do not get for some reason.
+    if (callback(x)) {
+      myArray.push(x);
+    }
+  }
+  return myArray;
+}
+// Call addNumtoArrayIfFit with a Callback
+const posNumbers = addNumtoArrayIfFit(myNumbers, (x) => x >= 0);
+
+// Display Result
+document.getElementById("demo").innerHTML = posNumbers;  // Not gonna lie, this is some straight up complicated shit.
+</script>
+
+
+<!-- <h2>setting timeout with a callback with setTimeout() with a Callback</h2> -->
+<h1 id="demos" style="padding: 10px; width: fit-content;">Hey Babe </h1>
+<script>
+function timeFunction() {
+  document.getElementById("demos").innerHTML = "I love You !!";
+  document.getElementById("demos").style.backgroundColor ="pink";
+}
+setTimeout(timeFunction,3000);
+</script>
+<!-- In the example above, timeFunction is used as a callback.
+It is passed to setTimeout() as an argument.
+3000 is the number of milliseconds before time-out, so myFunction() will be called after 3 seconds.
+
+Note
+When you pass a function as an argument, remember not to use parenthesis.
+Right: setTimeout(myFunction, 3000);
+Wrong: setTimeout(myFunction(), 3000);-->
+
+<div style="background-color: gray; width: fit-content; padding: 10px;">
+  <h2>setInterval() with a Callback</h2>
+  <p>Using setInterval() to display the time every second (1000 milliseconds).</p>
+  <h1 id="demio"></h1>
+  <script>
+  function dateFunction() {
+    let d = new Date();
+    document.getElementById("demio").innerHTML=
+    d.getHours() + ":" +
+    d.getMinutes() + ":" +
+    d.getSeconds(); 
+   //getHours,Minutes and Seconds are built in functions on js that is gotten/supported by Date() function. 
+  }
+  setInterval(dateFunction, 1000);
+  </script>
+</div>
+<!-- In the example above, setInterval is used as a callback.
+dateFunction is passed to setInterval() as an argument.
+1000 is the number of milliseconds between intervals, so dateFunction() will be called every second -->
+
+
+<script>
+function randomColor() {
+    let color = "#" + Math.floor(Math.random()*16777215).toString(16);
+    document.body.style.backgroundColor = color;
+}
+// Change color every 20 seconds
+setInterval(randomColor, 20000);
+</script>
+
+<p id="hu"></p>
+<script>
+  let myPromise = new Promise((resolve, reject) => {
+    let success = true; // Change to false to see rejection
+
+    setTimeout(() => {
+        if (success) {
+            resolve("✅ Operation Successful!");
+        } else {
+            reject("❌ Operation Failed!");
+        }
+    }, 2000);
+});
+
+// Using the Promise
+myPromise
+    .then(result => document.getElementById("hu").innerHTML =(result)) // Runs if resolved
+    .catch(error => document.getElementById("hu").innerHTML =(error)) // Runs if rejected
+    .finally(() => document.getElementById("hu").innerHTML = "🎉 Promise Completed!");
+</script>
+<!-- ✅ If success = true, after 2 seconds, it logs:
+
+javascript
+Copy
+Edit
+✅ Operation Successful!
+🎉 Promise Completed!
+❌ If success = false, it logs:
+
+javascript
+Copy
+Edit
+❌ Operation Failed!
+🎉 Promise Completed! -->
+
+<!-- You cannot access the Promise properties state and result. which could be pending,fulfilled or rejected as state to undefined ,value or error as result
+You must use a Promise method to handle promises. -->
+
+
+
+
+
+<h1>JavaScript Promise Object</h1>
+<h2>The then() Method this is more like a promise syntax</h2>
+
+<p id="deemo">PROMISE</p>
+
+<script>
+function myDisplayer(sime) {
+  document.getElementById("deemo").innerHTML = sime;
+}
+let myProomise = new Promise(function(myResolve, myReject) {
+  let x = 0;
+
+// some code (try to change x to 5)
+setTimeout(function(){
+  if (x == 0) {
+    myResolve("It went dude celebrate");
+  } else {
+    myReject("Error pele my dear.");
+  }
+},10000 )});
+
+myProomise.then(
+  function(value) {myDisplayer(value);},
+  function(error) {myDisplayer(error);}
+);
+</script>
+ <!-- my way to write a promise this is a bit layman though. above -->
+
+
+
+
+<!-- 
+<h2>JavaScript Callbacks (This is most likely the best example)</h2>
+<p id="peimo">Shit</p>
+<script>
+function myDisplayer(spme) {
+  document.getElementById("deimo").innerHTML = spme;
+}
+function getFile(myCallback) {
+  let req = new XMLHttpRequest();
+  req.onload = function() {
+    if (req.status == 200) {
+      myCallback(this.responseText);
+    } else {
+      myCallback("Error: " + req.status);
+    }
+  }
+  req.open('GET', "mycar.html");
+  req.send();
+}
+getFile(myDisplayer); 
+</script>  -->
+
+
+<!-- <h1>JavaScript async / await, here is how to use it</h1>
+<p id="demmo">ASYNC</p>
+<script>
+function myDispllayer(syme) {document.getElementById("demmo").innerHTML = syme;}
+async function myFuncktion() {return "Hello";}
+myFuncktion().then(
+  function(value) {myDispllayer(value);},
+  function(error) {myDispllayer(error);});
+</script> -->
+
+
+
+
+<!-- Await Syntax
+The await keyword can only be used inside an async function.
+The await keyword makes the function pause the execution and wait for a resolved promise before it continues:
+let value = await promise; -->
+<!-- <img src="https://dog.ceo/api/breeds/image/random" alt="Dog images"> -->
+
+<script>
+fetch('https://dog.ceo/api/breeds/image/random/20')
+.then(res => res.json()) //converts the response to json for the stuff to understand.
+.then(res => {
+  const data = res.message   //making data to be the container.
+  console.log(data);  // showing links in console
+  data.forEach(function(val,ind){  //splitting each components of the 20 to be value and index
+  const img =  document.createElement('img'); //creating element for which one of the component is put as it is API extracted
+  const p =  document.createElement('p');  // same as image for p
+  img.src = val  //directing the source file of the image to be from val 
+  p.src = ind     //directing the source file of the p to be from ind 
+  document.body.append(img,ind)  //appending/entering  to view in body.
+  })
+})
+
+
+
+const arr = [45,4,9,16,25];
+
+arr.forEach(function(x,y){
+   console.log(x);
+})
+
+const arrOfNames = {}
+  
+
+
+</script>
+
+
+<script>
+//in this callback , functspace is the callback turning bye to a function through th greet function to give output of 
+//Hello Alison
+//Goodbye!.
+//Callback is rather a confusing subject to dwell on so dont bother wasting your time on it.
+function greet (name, functspace){
+  console.log("Hello " + name);
+  functspace();
+}
+function bye(){
+  console.log("Goodbye!");
+}
+greet("Alison", bye)
+</script>
+
+</body>
+</html>
